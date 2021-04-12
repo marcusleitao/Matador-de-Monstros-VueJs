@@ -1,0 +1,60 @@
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" />
+        <link rel="stylesheet" href="style.css" />
+        <title>Matador de Monstros</title>
+    </head>
+    <body>
+        <div id="app">
+            <div class="placar moldura">
+                <div class="player">
+                    <h2>Jogador</h2>    
+                    <div class="barra">
+                        <div :style="{width: vidaJogador+'%'}"></div>
+                    </div>
+                    <div class="progresso">{{ vidaJogador }}%</div>
+                </div>
+                <div class="player">
+                    <h2>Monstro</h2>
+                    <div class="barra">
+                        <div :style="{width: vidaMonstro+'%'}"></div>
+                    </div>
+                    <div class="progresso">{{ vidaMonstro }}%</div>
+                </div>
+            </div>
+            <div v-if="finalizado" class="wins moldura">
+                <h2 class="win" v-if="resultado">Voce Ganhou!!!</h2>
+                <h2 class="los" v-else>Voce Perdeu!!!</h2>
+            </div>
+            <div class="acoes moldura">
+                <template v-if="iniciado">
+                    <button class="btn ataque" @click="atacar()" :disabled="finalizado">ATAQUE</button>
+                    <button class="btn ataque-especial" @click="atacar('especial')" :disabled="finalizado">ATAQUE ESPECIAL</button>
+                    <button class="btn curar" @click="curar" :disabled="finalizado">CURAR</button>
+                    <button class="btn desistir" @click="desistir()">DESISTIR</button>
+                </template>
+                <template v-else>
+                    <button class="btn comecar" @click="comecar()">COMEÇAR</button>
+                </template>
+            </div>
+            <div class="log moldura" v-if="logJogo.length > 0">
+                <template v-for="(log, chave) in logJogo">
+                    <template v-if="log.cura > 0">
+                        <h2 class="monstro">MONSTRO ATINGIU JOGADOR COM {{ log.monstro }}</h2>
+                        <h2 class="cura">JOGADOR GANHOU UMA FORÇA DE {{ log.cura }}</h2>
+                    </template>
+                    <template v-else>
+                        <h2 class="monstro">MONSTRO ATINGIU JOGADOR COM {{ log.monstro }}</h2>
+                        <h2 class="jogador">JOGADOR ATINGIU MONSTRO COM {{ log.jogador }}</h2>
+                    </template>
+                </template>
+            </div>
+        </div>
+        <script src="app.js"></script>
+    </body>
+</html>
